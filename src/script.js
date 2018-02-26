@@ -32,26 +32,26 @@ const svg = d3.select("body")
 
 //load in the datasets
 d3.queue()
-    .defer(d3.json,"../data/stateGrid.json")
-    .defer(d3.csv, "../data/mapDict.csv")
-    .defer(d3.csv, "../data/data.csv",parseData)
+    .defer(d3.json,"../data/data.json")
+//    .defer(d3.csv, "../data/mapDict.csv")
+//    .defer(d3.csv, "../data/data.csv",parseData)
     .await(ready);
 
-function ready(error,grid,dict,income) {
+function ready(error,nestByYear) {
   if (error) throw error;  
 
     
- 
+//  console.log()
 
 
 
     
     
 //nest data by year and then by state and add col and row and add index
-const nestByYear=d3.nest().key((d)=>{return d.year}).key((d)=>{return d.state}).entries(income);
-console.log(nestByYear)
-    
-     dataProcessor(nestByYear,grid,dict);
+//const nestByYear=d3.nest().key((d)=>{return d.year}).key((d)=>{return d.state}).entries(income);
+//console.log(nestByYear)
+//    
+//     dataProcessor(nestByYear,grid,dict);
     
       function refreshSwatch() {
       let slider = $( "#slider" ).slider( "value" );
@@ -92,42 +92,42 @@ console.log(nestByYear)
 
 
 //data processor function
-function dataProcessor (nestByYear,grid,dict){
-     
-    nestByYear.forEach((m,j)=>{
-
-                const nest=m.values,
-                      findName={},
-                      findAbbr={};
-                      dict.forEach((d)=>{findAbbr[d.State]=d.Abbreviation,findName[d.Abbreviation]=d.State;});  
-
-                const row={},
-                      col={};
-                      grid.forEach((d)=>{row[d.state]=d.row,col[d.state]=d.col})
-
-                const gridWidth=d3.max(grid,(d)=>{return d.col})+1,
-                      gridHeight=d3.max(grid,(d)=>{return d.row})+1;
-
-                function sortByDateAscending(a, b) {
-                    return a.index - b.index;
-                }    
-
-                //add two new arritutes to each nest object
-                nest.forEach((d,i)=>{
-                      d.abbr=findAbbr[d.key]
-                      d.row=row[d.abbr]
-                      d.col=col[d.abbr]
-                      d.values.forEach( 
-                          (n,e)=>{ 
-                          if (e==15){  n.index=0}
-                          else { n.index=e+1}
-                          }     
-                      )
-                      d.values.sort(sortByDateAscending);      
-                })        
-            })
-       
-}
+//function dataProcessor (nestByYear,grid,dict){
+//     
+//    nestByYear.forEach((m,j)=>{
+//
+//                const nest=m.values,
+//                      findName={},
+//                      findAbbr={};
+//                      dict.forEach((d)=>{findAbbr[d.State]=d.Abbreviation,findName[d.Abbreviation]=d.State;});  
+//
+//                const row={},
+//                      col={};
+//                      grid.forEach((d)=>{row[d.state]=d.row,col[d.state]=d.col})
+//
+//                const gridWidth=d3.max(grid,(d)=>{return d.col})+1,
+//                      gridHeight=d3.max(grid,(d)=>{return d.row})+1;
+//
+//                function sortByDateAscending(a, b) {
+//                    return a.index - b.index;
+//                }    
+//
+//                //add two new arritutes to each nest object
+//                nest.forEach((d,i)=>{
+//                      d.abbr=findAbbr[d.key]
+//                      d.row=row[d.abbr]
+//                      d.col=col[d.abbr]
+//                      d.values.forEach( 
+//                          (n,e)=>{ 
+//                          if (e==15){  n.index=0}
+//                          else { n.index=e+1}
+//                          }     
+//                      )
+//                      d.values.sort(sortByDateAscending);      
+//                })        
+//            })
+//       
+//}
 
 
 
@@ -185,15 +185,15 @@ function dataProcessor (nestByYear,grid,dict){
 
 
 
-
-function parseData(d){
-      
-    return {
-        year: +d.Year,
-        income: d.Income,
-        state: d.State,
-        percent: +d.Percent,
-        household: parseFloat(d.Households.replace(",", ""))
-        
-    };
-}
+//
+//function parseData(d){
+//      
+//    return {
+//        year: +d.Year,
+//        income: d.Income,
+//        state: d.State,
+//        percent: +d.Percent,
+//        household: parseFloat(d.Households.replace(",", ""))
+//        
+//    };
+//}
